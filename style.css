@@ -1,0 +1,695 @@
+/* =========================================================
+   L'Oréal brand colors (same scheme as the Beauty Advisor chatbot)
+   Black and white with a touch of gold.
+   Logical properties (margin-inline-start, inset-inline-end, etc.)
+   are used so the layout flips automatically in RTL mode.
+   ========================================================= */
+:root {
+  --loreal-black: #000000;
+  --loreal-white: #ffffff;
+  --loreal-gold: #b8955a;
+  --loreal-gold-light: #f5efe4;
+  --black: #000000;
+  --gray: #6b6b6b;
+  --border: #e3e3e3;
+  --bg: #ffffff;
+  --error: #b00020;
+  --radius: 12px;
+}
+
+/* —— basic reset —— */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* —— body + fonts —— */
+body {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  color: #333;
+  background: var(--bg);
+}
+
+.page-wrapper {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* thin brand stripe across the top + RTL switch */
+.top-bar {
+  border-top: 6px solid var(--loreal-black);
+  box-shadow: inset 0 3px 0 var(--loreal-gold);
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 5%;
+}
+
+.dir-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fff;
+  border: 1.5px solid var(--black);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dir-toggle:hover,
+.dir-toggle[aria-pressed="true"] {
+  background: var(--black);
+  color: #fff;
+}
+
+/* header */
+.site-header {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.logo {
+  width: 250px;
+  max-width: 70%;
+  margin-bottom: 15px;
+}
+
+.site-title {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* thin gold line under the title */
+.site-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--loreal-gold);
+  margin: 12px auto 0;
+}
+
+.site-tagline {
+  color: var(--gray);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+/* search + category filter */
+.search-section {
+  margin: 30px 0 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.search-box {
+  flex: 2;
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  inset-inline-start: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray);
+}
+
+.search-box input,
+.search-section select {
+  width: 100%;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 16px;
+  border: 2px solid var(--black);
+  border-radius: var(--radius);
+  background-color: #fff;
+}
+
+.search-box input {
+  padding-inline-start: 44px;
+}
+
+.search-section select {
+  flex: 1;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.search-box input:focus,
+.search-section select:focus {
+  outline: none;
+  border-color: var(--loreal-black);
+  box-shadow: 0 0 0 3px rgba(184, 149, 90, 0.3);
+}
+
+.results-count {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+/* placeholder message */
+.placeholder-message {
+  width: 100%;
+  text-align: center;
+  padding: 40px;
+  color: var(--gray);
+  font-size: 18px;
+}
+
+/* products grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin: 16px 0 30px;
+  max-height: 720px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.product-card {
+  position: relative;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.product-card:hover {
+  border-color: var(--loreal-gold);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* selected card = black border + soft gold background */
+.product-card.selected {
+  border-color: var(--loreal-black);
+  background: var(--loreal-gold-light);
+  box-shadow: 0 0 0 2px rgba(184, 149, 90, 0.3);
+}
+
+.card-select {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  padding: 14px;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.card-select:focus-visible,
+.details-btn:focus-visible,
+.remove-btn:focus-visible,
+.clear-btn:focus-visible {
+  outline: 3px solid var(--loreal-black);
+  outline-offset: 2px;
+}
+
+.card-select img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-brand {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--loreal-gold);
+}
+
+.product-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.product-category {
+  font-size: 12px;
+  color: var(--gray);
+  text-transform: capitalize;
+}
+
+/* check-mark badge in the corner of a selected card */
+.check-mark {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--loreal-black);
+  color: #fff;
+  font-size: 13px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card.selected .check-mark {
+  display: flex;
+}
+
+/* "Details" button + description */
+.details-btn {
+  align-self: flex-start;
+  margin: 0 14px 12px;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+  text-decoration: underline;
+  text-decoration-color: var(--loreal-gold);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.details-btn:hover {
+  color: var(--loreal-black);
+}
+
+.details-btn[aria-expanded="true"] i::before {
+  content: "\f056"; /* minus-circle icon when open */
+}
+
+.product-description {
+  margin: 0 14px 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--loreal-gold);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #444;
+}
+
+/* selected products */
+.selected-products {
+  margin: 30px 0;
+  padding: 22px;
+  border: 2px solid var(--black);
+  border-radius: var(--radius);
+}
+
+.selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.selected-products h2 {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.count-badge {
+  background: var(--loreal-black);
+  color: #fff;
+  font-size: 13px;
+  border-radius: 999px;
+  min-width: 26px;
+  padding: 3px 9px;
+  text-align: center;
+}
+
+.clear-btn {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--gray);
+}
+
+.clear-btn:hover {
+  border-color: var(--loreal-black);
+  color: var(--loreal-black);
+}
+
+#selectedProductsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.empty-selected {
+  color: var(--gray);
+  font-size: 15px;
+}
+
+.selected-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 6px;
+  padding-inline: 6px 8px;
+  border: 1.5px solid var(--loreal-gold);
+  background: var(--loreal-gold-light);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.selected-item img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.remove-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: var(--gray);
+}
+
+.remove-btn:hover {
+  background: var(--loreal-black);
+  color: #fff;
+}
+
+.generate-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--loreal-black);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.generate-btn:hover:not(:disabled) {
+  background: var(--loreal-gold);
+}
+
+.generate-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.generate-btn i {
+  margin-inline-end: 8px;
+}
+
+/* chat section */
+.chatbox {
+  margin: 40px 0;
+  border: 2px solid var(--black);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+
+.chatbox h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.chat-subtitle {
+  color: var(--gray);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.chat-window {
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.55;
+  height: 420px;
+  overflow-y: auto;
+  background: #fafafa;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* chat bubbles */
+.msg {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+}
+
+.msg-user {
+  align-self: flex-end;
+  background: var(--black);
+  color: #fff;
+  border-end-end-radius: 4px;
+}
+
+.msg-assistant {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--loreal-gold);
+  border-end-start-radius: 4px;
+}
+
+.msg-error {
+  align-self: flex-start;
+  background: #fff0f3;
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+.msg-assistant h4 {
+  font-size: 16px;
+  margin: 10px 0 4px;
+  color: var(--loreal-black);
+}
+
+.msg-assistant p {
+  margin: 4px 0;
+}
+
+.msg-assistant ul,
+.msg-assistant ol {
+  margin: 4px 0;
+  padding-inline-start: 22px;
+}
+
+.msg-assistant a {
+  color: var(--loreal-black);
+}
+
+/* web search sources */
+.citations {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--loreal-gold);
+  font-size: 13px;
+}
+
+.citations-title {
+  font-weight: 700;
+  color: var(--gray);
+}
+
+/* typing dots while waiting for the AI */
+.typing {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.typing span {
+  width: 8px;
+  height: 8px;
+  background: var(--loreal-gold);
+  border-radius: 50%;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* input row */
+.chat-form {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.chat-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  font: inherit;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  background: transparent;
+}
+
+.chat-form input:focus {
+  outline: none;
+  border-bottom-color: var(--loreal-black);
+}
+
+.chat-form button {
+  font-size: 18px;
+  background: var(--loreal-black);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.chat-form button:hover:not(:disabled) {
+  background: var(--loreal-gold);
+}
+
+.chat-form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.chat-form button:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 2px;
+}
+
+/* flip the paper-plane icon so it points the right way in RTL */
+[dir="rtl"] .chat-form button i,
+[dir="rtl"] .generate-btn i {
+  transform: scaleX(-1);
+}
+
+/* visually hidden */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* footer */
+.site-footer {
+  margin: 60px 0 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.site-footer nav {
+  margin-top: 12px;
+}
+
+.site-footer a {
+  margin: 0 8px;
+  color: var(--black);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--loreal-black);
+}
+
+/* —— phones + small tablets —— */
+@media (max-width: 640px) {
+  .page-wrapper {
+    width: auto;
+    margin: 0 16px;
+  }
+
+  .search-section {
+    flex-direction: column;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    max-height: 560px;
+  }
+
+  .selected-header {
+    flex-wrap: wrap;
+  }
+
+  .chatbox,
+  .selected-products {
+    padding: 16px;
+  }
+
+  .chat-window {
+    height: 360px;
+    padding: 12px;
+  }
+
+  .msg {
+    max-width: 95%;
+  }
+}
