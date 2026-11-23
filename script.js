@@ -86,11 +86,13 @@ function displayProducts(products) {
       const isSelected = selectedIds.includes(product.id);
       return `
       <article class="product-card ${isSelected ? "selected" : ""}" data-id="${product.id}">
-        <!-- Clicking the main area selects / unselects the product -->
-        <button class="card-select" type="button" aria-pressed="${isSelected}"
-          aria-label="${isSelected ? "Remove" : "Select"} ${product.brand} ${product.name}">
+        <!-- Clicking the main area selects / unselects the product.
+             Screen readers read the visible text, and aria-pressed tells them
+             whether the product is selected (no extra aria-label needed). -->
+        <button class="card-select" type="button" aria-pressed="${isSelected}">
           <span class="check-mark" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-          <img src="${product.image}" alt="" loading="lazy">
+          <!-- width/height save space for the image so the page doesn't jump -->
+          <img src="${product.image}" alt="" width="90" height="90" loading="lazy" decoding="async">
           <span class="product-info">
             <span class="product-brand">${product.brand}</span>
             <span class="product-name">${product.name}</span>
@@ -178,14 +180,9 @@ function updateSelectionUI() {
   document.querySelectorAll(".product-card").forEach((card) => {
     const id = Number(card.dataset.id);
     const isSelected = selectedIds.includes(id);
-    const product = allProducts.find((p) => p.id === id);
     const button = card.querySelector(".card-select");
     card.classList.toggle("selected", isSelected);
     button.setAttribute("aria-pressed", String(isSelected));
-    button.setAttribute(
-      "aria-label",
-      `${isSelected ? "Remove" : "Select"} ${product.brand} ${product.name}`
-    );
   });
 
   renderSelectedList();
@@ -208,7 +205,7 @@ function renderSelectedList() {
     .map(
       (product) => `
       <div class="selected-item">
-        <img src="${product.image}" alt="">
+        <img src="${product.image}" alt="" width="30" height="30">
         <span>${product.brand} – ${product.name}</span>
         <button class="remove-btn" type="button" data-id="${product.id}"
           aria-label="Remove ${product.brand} ${product.name}">
@@ -484,6 +481,8 @@ async function init() {
   selectedIds = selectedIds.filter((id) => allProducts.some((p) => p.id === id));
 
   applyFilters();
+  // Products are showing now, so the grid no longer needs its saved space
+  productsContainer.classList.remove("is-loading");
   renderSelectedList();
 
   addMessage(

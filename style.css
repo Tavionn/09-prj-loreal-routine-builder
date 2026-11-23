@@ -9,6 +9,8 @@
   --loreal-white: #ffffff;
   --loreal-gold: #b8955a;
   --loreal-gold-light: #f5efe4;
+  /* darker gold for small text, so it passes the 4.5:1 contrast check */
+  --loreal-gold-text: #7d6030;
   --black: #000000;
   --gray: #6b6b6b;
   --border: #e3e3e3;
@@ -77,6 +79,7 @@ body {
 .logo {
   width: 250px;
   max-width: 70%;
+  height: auto; /* keeps the logo's shape now that it has width/height in the HTML */
   margin-bottom: 15px;
 }
 
@@ -154,6 +157,7 @@ body {
 }
 
 .results-count {
+  min-height: 1.4em; /* save a line of space before the count appears */
   font-size: 14px;
   color: var(--gray);
   margin-bottom: 4px;
@@ -177,6 +181,12 @@ body {
   max-height: 720px;
   overflow-y: auto;
   padding: 4px;
+}
+
+/* While products are loading, save room for the grid so the
+   sections below it don't jump down when the cards appear */
+.products-grid.is-loading {
+  min-height: 720px;
 }
 
 .product-card {
@@ -243,7 +253,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--loreal-gold);
+  color: var(--loreal-gold-text);
 }
 
 .product-name {
@@ -281,7 +291,9 @@ body {
 /* "Details" button + description */
 .details-btn {
   align-self: flex-start;
-  margin: 0 14px 12px;
+  margin: 0 10px 8px;
+  min-height: 32px; /* big enough to tap easily (at least 24px) */
+  padding: 4px;
   background: none;
   border: none;
   font: inherit;
@@ -624,6 +636,14 @@ body {
   transform: scaleX(-1);
 }
 
+/* Save space for each icon before the icon font finishes loading,
+   so buttons don't change size when the icons pop in */
+.fa-solid {
+  display: inline-block;
+  width: 1.25em;
+  text-align: center;
+}
+
 /* visually hidden */
 .visually-hidden {
   position: absolute;
@@ -673,6 +693,10 @@ body {
   .products-grid {
     grid-template-columns: 1fr;
     max-height: 560px;
+  }
+
+  .products-grid.is-loading {
+    min-height: 560px;
   }
 
   .selected-header {
